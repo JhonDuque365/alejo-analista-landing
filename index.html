@@ -1,112 +1,51 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Alejo Analista | Pronósticos de Tenis de Mesa Gratis</title>
-<meta name="description" content="Pronósticos diarios de tenis de mesa basados en análisis de partidos y jugadores. Canal de Telegram completamente gratis.">
-<meta property="og:title" content="Alejo Analista | Tenis de Mesa">
-<meta property="og:description" content="Pronósticos diarios y análisis de partidos y jugadores. Completamente gratis en Telegram.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,800;1,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070d">
+  <title>Alejo Analista | Pronósticos de Tenis de Mesa Gratis</title>
+  <meta name="description" content="Pronósticos diarios de tenis de mesa basados en análisis de partidos y jugadores. Acceso completamente gratis en Telegram.">
+  <meta property="og:title" content="Alejo Analista | Tenis de Mesa">
+  <meta property="og:description" content="Pronósticos diarios y análisis de partidos y jugadores. Completamente gratis en Telegram.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-
-<nav class="nav">
-  <div class="container nav-inner">
-    <a class="nav-brand" href="#inicio">
-      <img id="logo-nav" class="logo-img" alt="Logo Alejo Analista" hidden>
-      <span class="nav-name">ALEJO <b>ANALISTA</b></span>
-    </a>
-    <div class="nav-links">
-      <a href="#picks">Picks</a>
-      <a href="#canal">Canal</a>
-      <a class="btn btn-sm" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis</a>
+  <div class="noise" aria-hidden="true"></div>
+  <header class="site-header" id="inicio">
+    <div class="nav-shell">
+      <a class="brand-link" href="#inicio" aria-label="Alejo Analista, inicio"><img id="logo-nav" class="brand-logo" alt="Logo Alejo Analista" hidden><span class="brand-text">ALEJO <strong>ANALISTA</strong></span></a>
+      <nav class="desktop-nav" aria-label="Navegación principal"><a href="#canal">Canal</a><a href="#picks">Picks</a><a href="#metodo">Método</a></nav>
+      <a class="button button-small header-cta" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis <span aria-hidden="true">↗</span></a>
+      <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
     </div>
-  </div>
-</nav>
-
-<header class="hero" id="inicio">
-  <div class="hero-overlay"></div>
-  <div class="container hero-content">
-    <img id="logo-hero" class="logo-hero" alt="Logo Alejo Analista" hidden>
-    <svg id="crown" class="crown" viewBox="0 0 100 70" aria-hidden="true">
-      <path d="M10 55 L18 18 L38 38 L50 10 L62 38 L82 18 L90 55 Z" fill="none" stroke="#0055ff" stroke-width="5" stroke-linejoin="round"/>
-      <line x1="8" y1="64" x2="92" y2="64" stroke="#0055ff" stroke-width="5" stroke-linecap="round"/>
-      <circle cx="18" cy="16" r="5" fill="#0055ff"/><circle cx="50" cy="8" r="5" fill="#0055ff"/><circle cx="82" cy="16" r="5" fill="#0055ff"/>
-    </svg>
-    <h1 class="brand">ALEJO</h1>
-    <p class="brand-sub"><span></span>ANALISTA<span></span></p>
-    <h2 class="headline">El tenis de mesa se analiza. No se adivina.</h2>
-    <p class="lead">Pronósticos diarios basados en el análisis de partidos y jugadores. Más de 3 años conociendo el mercado. <strong>Completamente gratis.</strong></p>
-    <a class="btn" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Entrar al canal gratis</a>
-    <ul class="badges">
-      <li>100% gratis</li>
-      <li>Pronósticos todos los días</li>
-      <li>Especialista en tenis de mesa</li>
-    </ul>
-  </div>
-</header>
-
-<section class="section" id="canal">
-  <div class="container">
-    <h2 class="title">Qué encontrarás en el canal</h2>
-    <div class="grid">
-      <article class="card"><div class="icon">📅</div><h3>Pronósticos diarios</h3><p>Selecciones de tenis de mesa compartidas todos los días.</p></article>
-      <article class="card"><div class="icon">🔎</div><h3>Análisis de partidos y jugadores</h3><p>El enfoque detrás de cada pronóstico, no solo el resultado.</p></article>
-      <article class="card"><div class="icon">📈</div><h3>+3 años en el mercado</h3><p>Experiencia siguiendo y analizando el tenis de mesa.</p></article>
-      <article class="card"><div class="icon">🆓</div><h3>Acceso completamente gratis</h3><p>Entra al canal y consulta el contenido sin pagar suscripción.</p></article>
-    </div>
-  </div>
-</section>
-
-<section class="section alt" id="picks">
-  <div class="container">
-    <h2 class="title">Picks acertados</h2>
-    <p class="subtitle">Capturas de pronósticos publicados en el canal. Los resultados pasados no garantizan resultados futuros.</p>
-    <div id="picks-grid" class="picks-grid"></div>
-    <p id="picks-empty" class="picks-empty" hidden>Pronto verás aquí las capturas de los picks acertados.</p>
-    <div class="center"><a class="btn" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Ver más picks en Telegram</a></div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container steps-wrap">
-    <h2 class="title">Cómo empezar</h2>
-    <ol class="steps">
-      <li><span>1</span>Toca el botón y abre el canal en Telegram.</li>
-      <li><span>2</span>Pulsa «Unirme» para entrar gratis.</li>
-      <li><span>3</span>Activa las notificaciones para no perder los pronósticos del día.</li>
-    </ol>
-  </div>
-</section>
-
-<section class="section about alt">
-  <div class="container narrow">
-    <h2 class="title">Más de 3 años siguiendo el mercado</h2>
-    <p>Soy Alejo Analista. Mi enfoque es el tenis de mesa: analizar partidos y jugadores para compartir pronósticos diarios con mi comunidad. El canal es completamente gratuito.</p>
-  </div>
-</section>
-
-<section class="cta">
-  <div class="container">
-    <h2>Tu próximo análisis está en Telegram</h2>
-    <p>Accede gratis y consulta los pronósticos de cada día.</p>
-    <a class="btn" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis a Telegram</a>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="container">
-    <p><strong>+18.</strong> Los pronósticos no garantizan resultados. Apostar implica riesgo de perder dinero. Juega de forma responsable y solo con dinero que puedas permitirte perder.</p>
-    <p>© <span id="year"></span> Alejo Analista</p>
-  </div>
-</footer>
-
-<div id="lightbox" class="lightbox" hidden><button id="lb-close" aria-label="Cerrar">×</button><img id="lb-img" alt="Pick ampliado"></div>
-<a class="float-btn" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis</a>
-<script src="js/main.js"></script>
+    <div class="mobile-menu" id="mobile-menu" hidden><a href="#canal">Canal</a><a href="#picks">Picks acertados</a><a href="#metodo">Método</a><a class="button" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis en Telegram <span aria-hidden="true">↗</span></a></div>
+  </header>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-orb orb-one" aria-hidden="true"></div><div class="hero-orb orb-two" aria-hidden="true"></div><div class="hero-grid" aria-hidden="true"></div>
+      <div class="hero-content container">
+        <div class="hero-logo-wrap"><img id="logo-hero" class="hero-logo" alt="Logo Alejo Analista" hidden><svg id="fallback-mark" class="fallback-mark" viewBox="0 0 72 72" aria-hidden="true"><path d="M14 50 20 20l16 18L52 20l6 30H14Z" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"/><path d="M14 58h44" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"/><circle cx="20" cy="17" r="3.5" fill="currentColor"/><circle cx="36" cy="10" r="3.5" fill="currentColor"/><circle cx="52" cy="17" r="3.5" fill="currentColor"/></svg></div>
+        <p class="eyebrow hero-animate">ANÁLISIS DE TENIS DE MESA</p>
+        <h1 id="hero-title" class="hero-title hero-animate">El juego cambia.<br><span>Tu análisis también.</span></h1>
+        <p class="hero-copy hero-animate">Pronósticos diarios basados en partidos y jugadores. Más de tres años conociendo el mercado del tenis de mesa, sin costo para ti.</p>
+        <div class="hero-actions hero-animate"><a class="button button-primary" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Entrar al canal gratis <span aria-hidden="true">↗</span></a><a class="text-link" href="#picks">Ver picks acertados <span aria-hidden="true">↓</span></a></div>
+        <div class="trust-row hero-animate" aria-label="Características del canal"><span><i></i> Acceso 100% gratis</span><span><i></i> Pronósticos diarios</span><span><i></i> Especializado en tenis de mesa</span></div>
+      </div>
+      <div class="hero-bottom-label" aria-hidden="true">DESLIZA PARA EXPLORAR <span>↓</span></div>
+    </section>
+    <section class="intro section-pad" id="canal"><div class="container intro-layout reveal"><p class="eyebrow">EL CANAL</p><div><h2>Una lectura más clara<br>antes de cada partido.</h2><p class="section-copy">Alejo Analista reúne análisis y pronósticos diarios para quienes siguen el tenis de mesa con criterio. Contenido directo, acceso libre y una comunidad en Telegram.</p><a class="text-link blue-link" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Conocer el canal <span aria-hidden="true">↗</span></a></div></div></section>
+    <section class="benefits section-pad"><div class="container"><div class="section-heading reveal"><p class="eyebrow">LO QUE ENCUENTRAS</p><h2>Información para seguir<br>el juego con otra perspectiva.</h2></div><div class="benefit-grid"><article class="benefit-card reveal"><span class="card-number">01</span><div class="benefit-icon">◌</div><h3>Pronósticos diarios</h3><p>Selecciones compartidas todos los días para el mercado de tenis de mesa.</p></article><article class="benefit-card reveal"><span class="card-number">02</span><div class="benefit-icon">⌁</div><h3>Análisis de partidos</h3><p>Partidos y jugadores revisados antes de compartir cada pronóstico.</p></article><article class="benefit-card reveal"><span class="card-number">03</span><div class="benefit-icon">↗</div><h3>Más de 3 años</h3><p>Experiencia siguiendo el comportamiento de este mercado especializado.</p></article><article class="benefit-card reveal"><span class="card-number">04</span><div class="benefit-icon">∞</div><h3>Completamente gratis</h3><p>Únete al canal, revisa el contenido y decide cómo seguir cada jornada.</p></article></div></div></section>
+    <section class="picks section-pad" id="picks"><div class="container"><div class="picks-heading reveal"><div><p class="eyebrow">HISTORIAL VISUAL</p><h2>Picks acertados.</h2></div><p>Capturas de pronósticos compartidos en el canal. Los resultados pasados no garantizan resultados futuros.</p></div><div id="picks-grid" class="picks-grid" aria-live="polite"></div><div id="picks-empty" class="picks-empty" hidden><span>+</span><p>Pronto verás aquí las capturas de los picks acertados.</p></div><div class="picks-action reveal"><a class="button button-outline" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Ver más en Telegram <span aria-hidden="true">↗</span></a></div></div></section>
+    <section class="method section-pad" id="metodo"><div class="method-glow" aria-hidden="true"></div><div class="container method-layout reveal"><div><p class="eyebrow">CÓMO EMPEZAR</p><h2>Simple. Directo.<br>Sin costo.</h2></div><ol class="steps"><li><span>01</span><div><h3>Abre el canal</h3><p>Entra en Telegram desde cualquier dispositivo.</p></div></li><li><span>02</span><div><h3>Únete gratis</h3><p>No necesitas suscripción ni pago para acceder.</p></div></li><li><span>03</span><div><h3>Sigue los análisis</h3><p>Activa las notificaciones para ver los pronósticos diarios.</p></div></li></ol></div></section>
+    <section class="final-cta section-pad"><div class="container final-card reveal"><div class="final-orb" aria-hidden="true"></div><p class="eyebrow">ALEJO ANALISTA EN TELEGRAM</p><h2>Tu próximo análisis<br>está a un toque.</h2><p>Únete al canal y recibe los pronósticos de cada día.</p><a class="button button-light" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis a Telegram <span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="site-footer"><div class="container footer-inner"><span class="footer-brand">ALEJO <b>ANALISTA</b></span><p><strong>+18.</strong> Los pronósticos no garantizan resultados. Apostar implica riesgo de perder dinero. Juega responsablemente.</p><span>© <span id="year"></span></span></div></footer>
+  <div id="lightbox" class="lightbox" hidden role="dialog" aria-modal="true" aria-label="Vista ampliada del pick"><button id="lb-close" aria-label="Cerrar imagen">×</button><img id="lb-img" alt="Pick acertado ampliado"></div>
+  <a class="mobile-cta" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis <span aria-hidden="true">↗</span></a>
+  <script src="js/main.js"></script>
 </body>
 </html>
