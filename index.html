@@ -10,14 +10,29 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,800;1,900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-<header class="hero">
+<nav class="nav">
+  <div class="container nav-inner">
+    <a class="nav-brand" href="#inicio">
+      <img id="logo-nav" class="logo-img" alt="Logo Alejo Analista" hidden>
+      <span class="nav-name">ALEJO <b>ANALISTA</b></span>
+    </a>
+    <div class="nav-links">
+      <a href="#picks">Picks</a>
+      <a href="#canal">Canal</a>
+      <a class="btn btn-sm" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="inicio">
   <div class="hero-overlay"></div>
   <div class="container hero-content">
-    <svg class="crown" viewBox="0 0 100 70" aria-hidden="true">
+    <img id="logo-hero" class="logo-hero" alt="Logo Alejo Analista" hidden>
+    <svg id="crown" class="crown" viewBox="0 0 100 70" aria-hidden="true">
       <path d="M10 55 L18 18 L38 38 L50 10 L62 38 L82 18 L90 55 Z" fill="none" stroke="#0055ff" stroke-width="5" stroke-linejoin="round"/>
       <line x1="8" y1="64" x2="92" y2="64" stroke="#0055ff" stroke-width="5" stroke-linecap="round"/>
       <circle cx="18" cy="16" r="5" fill="#0055ff"/><circle cx="50" cy="8" r="5" fill="#0055ff"/><circle cx="82" cy="16" r="5" fill="#0055ff"/>
@@ -35,7 +50,7 @@
   </div>
 </header>
 
-<section class="section">
+<section class="section" id="canal">
   <div class="container">
     <h2 class="title">Qué encontrarás en el canal</h2>
     <div class="grid">
@@ -47,7 +62,17 @@
   </div>
 </section>
 
-<section class="section alt">
+<section class="section alt" id="picks">
+  <div class="container">
+    <h2 class="title">Picks acertados</h2>
+    <p class="subtitle">Capturas de pronósticos publicados en el canal. Los resultados pasados no garantizan resultados futuros.</p>
+    <div id="picks-grid" class="picks-grid"></div>
+    <p id="picks-empty" class="picks-empty" hidden>Pronto verás aquí las capturas de los picks acertados.</p>
+    <div class="center"><a class="btn" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Ver más picks en Telegram</a></div>
+  </div>
+</section>
+
+<section class="section">
   <div class="container steps-wrap">
     <h2 class="title">Cómo empezar</h2>
     <ol class="steps">
@@ -58,7 +83,7 @@
   </div>
 </section>
 
-<section class="section about">
+<section class="section about alt">
   <div class="container narrow">
     <h2 class="title">Más de 3 años siguiendo el mercado</h2>
     <p>Soy Alejo Analista. Mi enfoque es el tenis de mesa: analizar partidos y jugadores para compartir pronósticos diarios con mi comunidad. El canal es completamente gratuito.</p>
@@ -76,11 +101,12 @@
 <footer class="footer">
   <div class="container">
     <p><strong>+18.</strong> Los pronósticos no garantizan resultados. Apostar implica riesgo de perder dinero. Juega de forma responsable y solo con dinero que puedas permitirte perder.</p>
-    <p>© <span id="y"></span> Alejo Analista</p>
+    <p>© <span id="year"></span> Alejo Analista</p>
   </div>
 </footer>
 
+<div id="lightbox" class="lightbox" hidden><button id="lb-close" aria-label="Cerrar">×</button><img id="lb-img" alt="Pick ampliado"></div>
 <a class="float-btn" href="https://t.me/alejoanalista10" target="_blank" rel="noopener">Unirme gratis</a>
-<script>document.getElementById('y').textContent=new Date().getFullYear();</script>
+<script src="js/main.js"></script>
 </body>
 </html>
