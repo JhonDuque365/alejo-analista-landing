@@ -43,23 +43,32 @@
           return a.name.localeCompare(b.name);
         })[0];
 
-        ["logo-nav", "logo-hero"].forEach(function (id) {
-          var image = document.getElementById(id);
+        var logoUrl = file.download_url || file.path;
+        var navLogo = document.getElementById("logo-nav");
+        var heroLogo = document.getElementById("logo-hero-inline");
+        var targets = [navLogo, heroLogo];
 
-          if (image) {
-            image.src = file.path;
-            image.hidden = false;
+        targets.forEach(function (image) {
+          if (!image) {
+            return;
           }
+
+          image.hidden = true;
+
+          image.onload = function () {
+            image.hidden = false;
+          };
+
+          image.onerror = function () {
+            image.removeAttribute("src");
+            image.hidden = true;
+          };
+
+          image.src = logoUrl;
         });
-
-        var crown = document.getElementById("crown");
-
-        if (crown) {
-          crown.hidden = true;
-        }
       })
       .catch(function () {
-        /* Mantiene la corona si no hay logo */
+        /* Sin carpeta, sin imagen o con error: no se muestra nada. */
       });
   }
 
@@ -201,10 +210,8 @@
 
       files.forEach(function (file, index) {
         var offset = getCircularOffset(index);
-
         var card = document.createElement("button");
         var image = document.createElement("img");
-
         var isActive = offset === 0;
         var distance = Math.abs(offset);
 
@@ -234,7 +241,7 @@
           isActive ? "1" : "0.62"
         );
 
-        image.src = file.path;
+        image.src = file.download_url || file.path;
         image.alt = "Resultado " + (index + 1);
         image.loading = index < 3 ? "eager" : "lazy";
         image.decoding = "async";
@@ -243,7 +250,7 @@
 
         card.addEventListener("click", function () {
           if (isActive) {
-            openLightbox(file.path, image.alt);
+            openLightbox(image.src, image.alt);
             return;
           }
 
@@ -310,12 +317,7 @@
           return;
         }
 
-        if (difference < 0) {
-          move(1);
-        } else {
-          move(-1);
-        }
-
+        move(difference < 0 ? 1 : -1);
         resetAutoTimer();
       },
       {
@@ -323,19 +325,11 @@
       }
     );
 
-    track.addEventListener(
-      "mouseenter",
-      function () {
-        pauseOnInteraction();
-      }
-    );
+    track.addEventListener("mouseenter", pauseOnInteraction);
 
-    track.addEventListener(
-      "mouseleave",
-      function () {
-        isPaused = false;
-      }
-    );
+    track.addEventListener("mouseleave", function () {
+      isPaused = false;
+    });
 
     render();
     startAutoTimer();
