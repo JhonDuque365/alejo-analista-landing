@@ -33,12 +33,9 @@
   <nav class="nav" aria-label="Navegación principal">
     <div class="container nav-inner">
       <a class="nav-brand" href="#inicio" aria-label="Alejo Analista, inicio">
-        <img
-          id="logo-nav"
-          class="logo-img"
-          alt=""
-          hidden
-        >
+        <span class="logo-frame logo-frame-nav" aria-hidden="true">
+          <img id="logo-nav" class="logo-img" alt="" hidden>
+        </span>
 
         <span class="nav-name">
           ALEJO <b>ANALISTA</b>
@@ -54,6 +51,7 @@
           href="https://t.me/+CZywA9iTWWszNWJh"
           target="_blank"
           rel="noopener noreferrer"
+          data-cta="nav"
         >
           Unirme gratis
         </a>
@@ -73,16 +71,17 @@
 
     <div id="mobile-menu" class="mobile-menu" hidden>
       <a href="#inicio">Inicio</a>
+      <a href="#resultados">Resultados</a>
       <a href="#canal">Canal</a>
-      <a href="#resultados">Mis resultados</a>
 
       <a
         class="btn"
         href="https://t.me/+CZywA9iTWWszNWJh"
         target="_blank"
         rel="noopener noreferrer"
+        data-cta="menu"
       >
-        Unirme gratis
+        Unirme gratis a Telegram
       </a>
     </div>
   </nav>
@@ -93,7 +92,6 @@
     <div class="container hero-content">
       <div class="hero-brand">
         <svg
-          id="crown"
           class="crown"
           viewBox="0 0 100 70"
           aria-hidden="true"
@@ -132,12 +130,14 @@
             </p>
           </div>
 
-          <img
-            id="logo-hero-inline"
-            class="logo-hero-inline"
-            alt=""
-            hidden
-          >
+          <span class="logo-frame logo-frame-hero" aria-hidden="true">
+            <img
+              id="logo-hero"
+              class="logo-hero"
+              alt=""
+              hidden
+            >
+          </span>
         </div>
       </div>
 
@@ -146,28 +146,93 @@
       </h2>
 
       <p class="lead">
-        Pronósticos diarios basados en el análisis de partidos y jugadores.
-        Más de 3 años conociendo el mercado.
-        <strong>Completamente gratis.</strong>
+        Pronósticos y análisis diarios de tenis de mesa. Revisa resultados
+        reales y recibe los próximos análisis
+        <strong>completamente gratis en Telegram.</strong>
       </p>
 
       <a
-        class="btn"
+        class="btn btn-lg"
         href="https://t.me/+CZywA9iTWWszNWJh"
         target="_blank"
         rel="noopener noreferrer"
+        data-cta="hero"
       >
-        Entrar al canal gratis
+        Unirme gratis a Telegram
         <span aria-hidden="true">↗</span>
       </a>
 
+      <p class="microcopy">
+        Acceso inmediato · Sin pagos · Puedes salir cuando quieras
+      </p>
+
       <ul class="badges">
         <li>100% gratis</li>
-        <li>Pronósticos todos los días</li>
+        <li>Análisis todos los días</li>
         <li>Especialista en tenis de mesa</li>
       </ul>
     </div>
   </header>
+
+  <section class="section alt results" id="resultados">
+    <div class="container">
+      <div class="results-heading reveal">
+        <h2 class="title">RESULTADOS RECIENTES</h2>
+
+        <p class="results-copy">
+          Capturas compartidas en el canal. Revisa el enfoque y decide por ti
+          mismo antes de unirte.
+        </p>
+      </div>
+
+      <div
+        id="roulette-stage"
+        class="roulette-stage reveal"
+        aria-label="Carrusel de resultados recientes"
+      >
+        <div class="roulette-light roulette-light-left" aria-hidden="true"></div>
+        <div class="roulette-light roulette-light-right" aria-hidden="true"></div>
+        <div class="roulette-floor" aria-hidden="true"></div>
+
+        <div
+          id="roulette-track"
+          class="roulette-track"
+          aria-live="polite"
+        ></div>
+      </div>
+
+      <p id="picks-empty" class="picks-empty" hidden>
+        Estamos preparando las capturas más recientes. Entra al canal para ver
+        los análisis del día.
+      </p>
+
+      <p class="roulette-hint">
+        La ruleta se mueve automáticamente · Pasa el mouse o mantén el dedo
+        para pausarla · Toca la imagen central para ampliarla
+      </p>
+
+      <div class="center reveal">
+        <a
+          class="btn"
+          href="https://t.me/+CZywA9iTWWszNWJh"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cta="results"
+        >
+          Unirme gratis a Telegram
+        </a>
+
+        <p class="microcopy">
+          Acceso gratis · Sin suscripción
+        </p>
+
+        <p class="note">
+          Las capturas son informativas. Los pronósticos no garantizan
+          resultados ni ganancias.
+        </p>
+      </div>
+    </div>
+  </section>
 
   <section class="section" id="canal">
     <div class="container">
@@ -180,85 +245,38 @@
           <div class="icon">📅</div>
           <h3>Pronósticos diarios</h3>
           <p>
-            Selecciones de tenis de mesa compartidas todos los días.
+            Selecciones de tenis de mesa compartidas directamente en Telegram.
           </p>
         </article>
 
         <article class="card reveal">
           <div class="icon">🔎</div>
-          <h3>Análisis de partidos y jugadores</h3>
+          <h3>Análisis de cada partido</h3>
           <p>
-            El enfoque detrás de cada pronóstico, no solo el resultado.
+            Contexto de jugadores, rendimiento y lectura del encuentro.
           </p>
         </article>
 
         <article class="card reveal">
-          <div class="icon">📈</div>
-          <h3>+3 años en el mercado</h3>
+          <div class="icon">🏓</div>
+          <h3>Enfoque especializado</h3>
           <p>
-            Experiencia siguiendo y analizando el tenis de mesa.
+            Más de 3 años siguiendo el mercado de tenis de mesa.
           </p>
         </article>
 
         <article class="card reveal">
           <div class="icon">🆓</div>
-          <h3>Acceso completamente gratis</h3>
+          <h3>Acceso sin costo</h3>
           <p>
-            Entra al canal y consulta el contenido sin pagar suscripción.
+            Sin pagos ni suscripción. Entra, revisa el contenido y decide.
           </p>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="section alt results" id="resultados">
-    <div class="container">
-      <div class="results-heading reveal">
-        <h2 class="title">MIS RESULTADOS</h2>
-
-        <p class="results-copy">
-          No necesitas creerme a ciegas: revisa las capturas, conoce el
-          enfoque y decide por ti mismo. Únete gratis para recibir los
-          próximos análisis directamente en Telegram.
-        </p>
-      </div>
-
-      <div class="roulette-stage reveal">
-        <div class="roulette-glow" aria-hidden="true"></div>
-
-        <div
-          id="roulette-track"
-          class="roulette-track"
-          aria-live="polite"
-        ></div>
-      </div>
-
-      <p id="picks-empty" class="picks-empty" hidden>
-        Pronto verás aquí las capturas de mis resultados.
-      </p>
-
-      <p class="roulette-hint">
-        Desliza para explorar los resultados
-      </p>
-
-      <div class="center reveal">
-        <a
-          class="btn"
-          href="https://t.me/+CZywA9iTWWszNWJh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Quiero ver los próximos análisis
-        </a>
-
-        <p class="cta-note">
-          Acceso gratis · Sin suscripción
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
+  <section class="section alt">
     <div class="container steps-wrap">
       <h2 class="title reveal">Cómo empezar</h2>
 
@@ -275,13 +293,13 @@
 
         <li>
           <span>3</span>
-          Activa las notificaciones para no perder los pronósticos del día.
+          Activa las notificaciones para no perder los análisis del día.
         </li>
       </ol>
     </div>
   </section>
 
-  <section class="section about alt">
+  <section class="section about">
     <div class="container narrow reveal">
       <h2 class="title">
         Más de 3 años siguiendo el mercado
@@ -289,8 +307,8 @@
 
       <p>
         Soy Alejo Analista. Mi enfoque es el tenis de mesa: analizar partidos
-        y jugadores para compartir pronósticos diarios con mi comunidad.
-        El canal es completamente gratuito.
+        y jugadores para compartir pronósticos diarios con mi comunidad. El
+        canal es completamente gratuito.
       </p>
     </div>
   </section>
@@ -308,6 +326,7 @@
         href="https://t.me/+CZywA9iTWWszNWJh"
         target="_blank"
         rel="noopener noreferrer"
+        data-cta="final"
       >
         Unirme gratis a Telegram
       </a>
@@ -337,7 +356,7 @@
     aria-modal="true"
     aria-label="Vista ampliada del resultado"
   >
-    <button id="lb-close" aria-label="Cerrar">
+    <button id="lb-close" type="button" aria-label="Cerrar">
       ×
     </button>
 
@@ -349,6 +368,7 @@
     href="https://t.me/+CZywA9iTWWszNWJh"
     target="_blank"
     rel="noopener noreferrer"
+    data-cta="float"
   >
     Unirme gratis
   </a>

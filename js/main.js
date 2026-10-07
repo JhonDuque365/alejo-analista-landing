@@ -6,6 +6,13 @@
   var BRANCH = "main";
   var IMAGE = /\.(png|jpe?g|webp|svg|gif|avif)$/i;
 
+  var reduceMotion =
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var lightboxOpen = false;
+  var previousFocus = null;
+
   function list(directory) {
     var url =
       "https://api.github.com/repos/" +
@@ -32,6 +39,33 @@
       });
   }
 
+  function loadImageSafely(image, source, frame) {
+    if (!image) {
+      return;
+    }
+
+    image.hidden = true;
+
+    image.onload = function () {
+      image.hidden = false;
+
+      if (frame) {
+        frame.classList.add("has-logo");
+      }
+    };
+
+    image.onerror = function () {
+      image.removeAttribute("src");
+      image.hidden = true;
+
+      if (frame) {
+        frame.classList.remove("has-logo");
+      }
+    };
+
+    image.src = source;
+  }
+
   function loadLogo() {
     list("assets/logo")
       .then(function (files) {
@@ -39,36 +73,26 @@
           return;
         }
 
-        var file = files.sort(function (a, b) {
+        files.sort(function (a, b) {
           return a.name.localeCompare(b.name);
-        })[0];
-
-        var logoUrl = file.download_url || file.path;
-        var navLogo = document.getElementById("logo-nav");
-        var heroLogo = document.getElementById("logo-hero-inline");
-        var targets = [navLogo, heroLogo];
-
-        targets.forEach(function (image) {
-          if (!image) {
-            return;
-          }
-
-          image.hidden = true;
-
-          image.onload = function () {
-            image.hidden = false;
-          };
-
-          image.onerror = function () {
-            image.removeAttribute("src");
-            image.hidden = true;
-          };
-
-          image.src = logoUrl;
         });
+
+        var logoUrl = files[0].download_url || files[0].path;
+
+        loadImageSafely(
+          document.getElementById("logo-nav"),
+          logoUrl,
+          document.querySelector(".logo-frame-nav")
+        );
+
+        loadImageSafely(
+          document.getElementById("logo-hero"),
+          logoUrl,
+          document.querySelector(".logo-frame-hero")
+        );
       })
       .catch(function () {
-        /* Sin carpeta, sin imagen o con error: no se muestra nada. */
+        /* No se muestra nada si assets/logo no existe o está vacío. */
       });
   }
 
@@ -78,28 +102,35 @@
   var lightboxImage = document.getElementById("lb-img");
   var closeButton = document.getElementById("lb-close");
 
-  function closeLightbox() {
-    if (!lightbox) {
+  function openLightbox(source, alt) {
+    if (!lightbox || !lightboxImage) {
       return;
     }
 
-    lightbox.hidden = true;
-    lightboxImage.src = "";
-    document.body.style.overflow = "";
-  }
-
-  function openLightbox(src, alt) {
-    if (!lightbox) {
-      return;
-    }
-
-    lightboxImage.src = src;
+    previousFocus = document.activeElement;
+    lightboxImage.src = source;
     lightboxImage.alt = alt || "Resultado ampliado";
     lightbox.hidden = false;
+    lightboxOpen = true;
     document.body.style.overflow = "hidden";
 
     if (closeButton) {
       closeButton.focus();
+    }
+  }
+
+  function closeLightbox() {
+    if (!lightbox || !lightboxImage) {
+      return;
+    }
+
+    lightbox.hidden = true;
+    lightboxImage.removeAttribute("src");
+    document.body.style.overflow = "";
+    lightboxOpen = false;
+
+    if (previousFocus && previousFocus.focus) {
+      previousFocus.focus();
     }
   }
 
@@ -113,45 +144,43 @@
       return;
     }
 
-    function closeMenu() {
-      panel.hidden = true;
-      button.setAttribute("aria-expanded", "false");
-      button.setAttribute("aria-label", "Abrir menú");
+    function setMenu(open) {
+      panel.hidden = !open;
+      button.setAttribute("aria-expanded", String(open));
+      button.setAttribute(
+        "aria-label",
+        open ? "Cerrar menú" : "Abrir menú"
+      );
     }
 
     button.addEventListener("click", function () {
-      var isOpen = !panel.hidden;
-
-      panel.hidden = isOpen;
-      button.setAttribute("aria-expanded", String(!isOpen));
-      button.setAttribute(
-        "aria-label",
-        isOpen ? "Abrir menú" : "Cerrar menú"
-      );
+      setMenu(panel.hidden);
     });
 
     panel.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", closeMenu);
+      link.addEventListener("click", function () {
+        setMenu(false);
+      });
     });
   }
 
-  /* Animaciones suaves */
+  /* Apariciones suaves */
 
-  var observer;
+  var revealObserver;
 
-  function observe(element) {
+  function observeReveal(element) {
     if (!("IntersectionObserver" in window)) {
       element.classList.add("is-visible");
       return;
     }
 
-    if (!observer) {
-      observer = new IntersectionObserver(
+    if (!revealObserver) {
+      revealObserver = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
             if (entry.isIntersecting) {
               entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
+              revealObserver.unobserve(entry.target);
             }
           });
         },
@@ -161,20 +190,23 @@
       );
     }
 
-    observer.observe(element);
+    revealObserver.observe(element);
   }
 
-  /* Ruleta 3D con rotación automática */
+  /* Ruleta 3D */
 
   function setupRoulette(files) {
+    var stage = document.getElementById("roulette-stage");
     var track = document.getElementById("roulette-track");
     var empty = document.getElementById("picks-empty");
 
-    if (!track) {
+    if (!stage || !track) {
       return;
     }
 
     if (!files.length) {
+      stage.hidden = true;
+
       if (empty) {
         empty.hidden = false;
       }
@@ -188,15 +220,20 @@
       });
     });
 
-    var activeIndex = 0;
     var total = files.length;
+    var activeIndex = 0;
+    var cards = [];
+    var stageVisible = false;
+    var mouseInside = false;
+    var fingerDown = false;
     var touchStartX = 0;
-    var autoTimer = null;
-    var isPaused = false;
-    var pauseTimeout = null;
+    var restartTimer = null;
+    var lastFrame = 0;
+    var speed = 0.42;
+    var pauseUntil = 0;
 
-    function getCircularOffset(itemIndex) {
-      var offset = (itemIndex - activeIndex + total) % total;
+    function circularOffset(index) {
+      var offset = (index - activeIndex + total) % total;
 
       if (offset > total / 2) {
         offset -= total;
@@ -205,61 +242,39 @@
       return offset;
     }
 
+    function applyCardPosition(card, index) {
+      var offset = circularOffset(index);
+      var distance = Math.abs(offset);
+      var active = offset === 0;
+
+      var x = offset * 148;
+      var z = active ? 115 : Math.max(-240, 45 - distance * 110);
+      var rotate = offset * 28;
+      var scale = active ? 1 : Math.max(0.62, 0.95 - distance * 0.12);
+      var opacity = distance > 2 ? 0 : Math.max(0.16, 1 - distance * 0.28);
+      var brightness = active ? 1 : Math.max(0.48, 0.78 - distance * 0.1);
+
+      card.classList.toggle("is-active", active);
+      card.style.zIndex = String(100 - distance);
+      card.style.setProperty("--x", x + "px");
+      card.style.setProperty("--z", z + "px");
+      card.style.setProperty("--rotate", rotate + "deg");
+      card.style.setProperty("--scale", String(scale));
+      card.style.setProperty("--opacity", String(opacity));
+      card.style.setProperty("--brightness", String(brightness));
+      card.tabIndex = distance > 2 ? -1 : 0;
+
+      card.setAttribute(
+        "aria-label",
+        active
+          ? "Ampliar resultado " + (index + 1)
+          : "Ver resultado " + (index + 1)
+      );
+    }
+
     function render() {
-      track.innerHTML = "";
-
-      files.forEach(function (file, index) {
-        var offset = getCircularOffset(index);
-        var card = document.createElement("button");
-        var image = document.createElement("img");
-        var isActive = offset === 0;
-        var distance = Math.abs(offset);
-
-        card.type = "button";
-        card.className = "result-card" + (isActive ? " is-active" : "");
-        card.setAttribute(
-          "aria-label",
-          "Abrir resultado " + (index + 1)
-        );
-
-        card.style.setProperty("--x", offset * 145 + "px");
-        card.style.setProperty(
-          "--z",
-          isActive ? "90px" : Math.max(-180, 70 - distance * 95) + "px"
-        );
-        card.style.setProperty("--rotate", offset * 26 + "deg");
-        card.style.setProperty(
-          "--scale",
-          isActive ? "1" : Math.max(0.68, 1 - distance * 0.12)
-        );
-        card.style.setProperty(
-          "--opacity",
-          distance > 2 ? "0" : Math.max(0.18, 1 - distance * 0.25)
-        );
-        card.style.setProperty(
-          "--brightness",
-          isActive ? "1" : "0.62"
-        );
-
-        image.src = file.download_url || file.path;
-        image.alt = "Resultado " + (index + 1);
-        image.loading = index < 3 ? "eager" : "lazy";
-        image.decoding = "async";
-
-        card.appendChild(image);
-
-        card.addEventListener("click", function () {
-          if (isActive) {
-            openLightbox(image.src, image.alt);
-            return;
-          }
-
-          activeIndex = index;
-          render();
-          resetAutoTimer();
-        });
-
-        track.appendChild(card);
+      cards.forEach(function (card, index) {
+        applyCardPosition(card, index);
       });
     }
 
@@ -268,83 +283,219 @@
       render();
     }
 
-    function startAutoTimer() {
-      if (autoTimer) {
-        clearInterval(autoTimer);
+    function pauseFor(milliseconds) {
+      pauseUntil = Date.now() + milliseconds;
+
+      if (restartTimer) {
+        clearTimeout(restartTimer);
       }
 
-      autoTimer = setInterval(function () {
-        if (!isPaused) {
-          move(1);
-        }
-      }, 4000);
+      restartTimer = setTimeout(function () {
+        pauseUntil = 0;
+      }, milliseconds);
     }
 
-    function resetAutoTimer() {
-      startAutoTimer();
-    }
+    files.forEach(function (file, index) {
+      var card = document.createElement("button");
+      var image = document.createElement("img");
 
-    function pauseOnInteraction() {
-      isPaused = true;
+      card.type = "button";
+      card.className = "result-card";
 
-      if (pauseTimeout) {
-        clearTimeout(pauseTimeout);
-      }
+      image.src = file.download_url || file.path;
+      image.alt = "Resultado " + (index + 1);
+      image.loading = index < 4 ? "eager" : "lazy";
+      image.decoding = "async";
 
-      pauseTimeout = setTimeout(function () {
-        isPaused = false;
-      }, 8000);
-    }
+      card.appendChild(image);
 
-    track.addEventListener(
-      "touchstart",
-      function (event) {
-        touchStartX = event.touches[0].clientX;
-        pauseOnInteraction();
-      },
-      {
-        passive: true
-      }
-    );
-
-    track.addEventListener(
-      "touchend",
-      function (event) {
-        var touchEndX = event.changedTouches[0].clientX;
-        var difference = touchEndX - touchStartX;
-
-        if (Math.abs(difference) < 35) {
+      card.addEventListener("click", function () {
+        if (index === activeIndex) {
+          openLightbox(image.src, image.alt);
           return;
         }
 
-        move(difference < 0 ? 1 : -1);
-        resetAutoTimer();
+        activeIndex = index;
+        render();
+        pauseFor(3500);
+      });
+
+      track.appendChild(card);
+      cards.push(card);
+    });
+
+    stage.addEventListener("mouseenter", function () {
+      mouseInside = true;
+    });
+
+    stage.addEventListener("mouseleave", function () {
+      mouseInside = false;
+      pauseFor(700);
+    });
+
+    stage.addEventListener("focusin", function () {
+      mouseInside = true;
+    });
+
+    stage.addEventListener("focusout", function () {
+      mouseInside = false;
+    });
+
+    stage.addEventListener(
+      "touchstart",
+      function (event) {
+        fingerDown = true;
+        touchStartX = event.touches[0].clientX;
+
+        if (restartTimer) {
+          clearTimeout(restartTimer);
+        }
       },
       {
         passive: true
       }
     );
 
-    track.addEventListener("mouseenter", pauseOnInteraction);
+    stage.addEventListener(
+      "touchmove",
+      function () {
+        fingerDown = true;
+      },
+      {
+        passive: true
+      }
+    );
 
-    track.addEventListener("mouseleave", function () {
-      isPaused = false;
-    });
+    stage.addEventListener(
+      "touchend",
+      function (event) {
+        fingerDown = false;
+
+        var touchEndX = event.changedTouches[0].clientX;
+        var difference = touchEndX - touchStartX;
+
+        if (Math.abs(difference) >= 35) {
+          move(difference < 0 ? 1 : -1);
+        }
+
+        pauseFor(2800);
+      },
+      {
+        passive: true
+      }
+    );
+
+    stage.addEventListener(
+      "touchcancel",
+      function () {
+        fingerDown = false;
+        pauseFor(1800);
+      },
+      {
+        passive: true
+      }
+    );
+
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(
+        function (entries) {
+          stageVisible = entries[0].isIntersecting;
+        },
+        {
+          threshold: 0.25
+        }
+      ).observe(stage);
+    } else {
+      stageVisible = true;
+    }
+
+    function animate(timestamp) {
+      if (!lastFrame) {
+        lastFrame = timestamp;
+      }
+
+      var delta = timestamp - lastFrame;
+      lastFrame = timestamp;
+
+      var shouldMove =
+        !reduceMotion &&
+        total > 1 &&
+        stageVisible &&
+        !document.hidden &&
+        !lightboxOpen &&
+        !mouseInside &&
+        !fingerDown &&
+        Date.now() > pauseUntil;
+
+      if (shouldMove && delta > 0) {
+        var progress = delta * speed;
+
+        if (progress >= 1700) {
+          move(1);
+        }
+      }
+
+      window.requestAnimationFrame(animate);
+    }
 
     render();
-    startAutoTimer();
+    window.requestAnimationFrame(animate);
+
+    setInterval(function () {
+      var shouldAdvance =
+        !reduceMotion &&
+        total > 1 &&
+        stageVisible &&
+        !document.hidden &&
+        !lightboxOpen &&
+        !mouseInside &&
+        !fingerDown &&
+        Date.now() > pauseUntil;
+
+      if (shouldAdvance) {
+        move(1);
+      }
+    }, 3600);
   }
 
   function loadResults() {
     list("assets/picks")
       .then(setupRoulette)
       .catch(function () {
+        var stage = document.getElementById("roulette-stage");
         var empty = document.getElementById("picks-empty");
+
+        if (stage) {
+          stage.hidden = true;
+        }
 
         if (empty) {
           empty.hidden = false;
         }
       });
+  }
+
+  /* Medición de clics opcional */
+
+  function trackTelegramClicks() {
+    document.querySelectorAll("[data-cta]").forEach(function (link) {
+      link.addEventListener("click", function () {
+        var location = link.getAttribute("data-cta");
+
+        if (typeof window.gtag === "function") {
+          window.gtag("event", "telegram_click", {
+            cta_location: location
+          });
+        }
+
+        if (window.dataLayer && window.dataLayer.push) {
+          window.dataLayer.push({
+            event: "telegram_click",
+            cta_location: location
+          });
+        }
+      });
+    });
   }
 
   /* Eventos globales */
@@ -362,7 +513,7 @@
   }
 
   document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape" && lightbox && !lightbox.hidden) {
+    if (event.key === "Escape" && lightboxOpen) {
       closeLightbox();
     }
   });
@@ -373,9 +524,10 @@
     year.textContent = new Date().getFullYear();
   }
 
-  document.querySelectorAll(".reveal").forEach(observe);
+  document.querySelectorAll(".reveal").forEach(observeReveal);
 
   setupMenu();
+  trackTelegramClicks();
   loadLogo();
   loadResults();
 })();
