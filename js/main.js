@@ -257,6 +257,7 @@
         }
 
         var itemAngle = (Math.PI * 2) / total;
+
         rotation = -index * itemAngle;
         resumeAt = performance.now() + 2500;
         draw();
@@ -268,13 +269,17 @@
     function draw() {
       var itemAngle = (Math.PI * 2) / total;
       var viewportWidth = stage.clientWidth;
+      var mobile = viewportWidth <= 640;
 
-      var radius = Math.min(
-        viewportWidth < 600 ? viewportWidth * 0.37 : viewportWidth * 0.32,
-        340
-      );
+      /*
+        En móviles reducimos la distancia horizontal y profundidad
+        para que la tarjeta central nunca salga del área visible.
+      */
+      var radius = mobile
+        ? Math.min(viewportWidth * 0.24, 105)
+        : Math.min(viewportWidth * 0.32, 340);
 
-      var depth = viewportWidth < 600 ? 110 : 170;
+      var depth = mobile ? 75 : 170;
       var bestDepth = -Infinity;
 
       var positions = cards.map(function (card, index) {
@@ -296,13 +301,16 @@
       cards.forEach(function (card, index) {
         var position = positions[index];
         var front = (position.z + 1) / 2;
-        var isVisible = position.z > -0.68;
+        var isVisible = position.z > -0.72;
         var translateX = position.x * radius;
         var translateZ = position.z * depth;
-        var rotateY = -position.x * 48;
-        var scale = 0.68 + front * 0.32;
-        var opacity = 0.18 + front * 0.82;
-        var brightness = 0.45 + front * 0.55;
+        var rotateY = -position.x * (mobile ? 35 : 48);
+        var scale = mobile
+          ? 0.7 + front * 0.3
+          : 0.68 + front * 0.32;
+
+        var opacity = 0.2 + front * 0.8;
+        var brightness = 0.48 + front * 0.52;
 
         card.style.transform =
           "translate(-50%, -50%) " +

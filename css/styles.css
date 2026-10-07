@@ -494,9 +494,7 @@ button:focus-visible,
   line-height: 1.55;
 }
 
-/* ======================================================
-   RULETA 3D HORIZONTAL
-====================================================== */
+/* Ruleta horizontal 3D */
 
 .roulette-stage {
   position: relative;
@@ -514,7 +512,7 @@ button:focus-visible,
 
 .roulette-glow {
   position: absolute;
-  top: 52%;
+  top: 50%;
   left: 50%;
   width: min(720px, 95%);
   height: 280px;
@@ -532,7 +530,7 @@ button:focus-visible,
 
 .roulette-floor {
   position: absolute;
-  bottom: 27px;
+  bottom: 25px;
   left: 50%;
   width: min(660px, 86%);
   height: 68px;
@@ -555,10 +553,6 @@ button:focus-visible,
   transform-style: preserve-3d;
 }
 
-/*
-  Las tarjetas se posicionan de forma absoluta.
-  JavaScript las transforma en un carrusel horizontal 3D.
-*/
 .result-card {
   position: absolute;
   top: 50%;
@@ -815,16 +809,16 @@ button:focus-visible,
   }
 
   .roulette-stage {
-    height: 375px;
+    height: 385px;
   }
 
   .result-card {
-    width: 190px;
-    height: 254px;
+    width: 192px;
+    height: 258px;
   }
 }
 
-/* Móvil */
+/* Móvil: corrección principal de visibilidad */
 
 @media (max-width: 640px) {
   .container {
@@ -907,13 +901,28 @@ button:focus-visible,
     grid-template-columns: 1fr;
   }
 
+  /*
+    El alto se fija para que la ruleta tenga espacio visible.
+    Las tarjetas están centradas vertical y horizontalmente.
+  */
   .roulette-stage {
-    height: 320px;
+    height: 330px;
+    min-height: 330px;
+    margin: 0 -16px;
+    overflow: hidden;
   }
 
+  .roulette-track {
+    height: 330px;
+  }
+
+  /*
+    La imagen central se ve completa en teléfonos.
+    Las laterales aparecen parcialmente para dar efecto de ruleta.
+  */
   .result-card {
-    width: 154px;
-    height: 214px;
+    width: 158px;
+    height: 218px;
     padding: 5px;
     border-radius: 17px;
   }
@@ -927,13 +936,39 @@ button:focus-visible,
     border-radius: 13px;
   }
 
+  .roulette-floor {
+    bottom: 35px;
+    width: 82%;
+  }
+
+  .roulette-glow {
+    top: 50%;
+    width: 110%;
+    height: 220px;
+  }
+
   .roulette-hint {
-    max-width: 300px;
-    margin: 0 auto;
+    max-width: 260px;
+    margin: 8px auto 0;
+    padding: 0 4px;
+  }
+
+  .center {
+    margin-top: 30px;
+  }
+
+  /*
+    El botón flotante se mueve un poco arriba para no tapar
+    contenido importante en navegadores móviles.
+  */
+  .float-btn {
+    right: 14px;
+    bottom: 78px;
+    padding: 11px 18px;
   }
 
   .footer {
-    padding-bottom: 90px;
+    padding-bottom: 150px;
   }
 }
 
