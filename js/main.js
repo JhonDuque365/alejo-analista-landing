@@ -464,23 +464,19 @@
       });
   }
 
-  /* Analítica opcional */
+  /* Analítica */
 
   function trackTelegramClicks() {
     document.querySelectorAll("[data-cta]").forEach(function (link) {
       link.addEventListener("click", function () {
         var location = link.getAttribute("data-cta");
+        var buttonText = link.textContent.trim().replace(/\s+/g, " ");
 
         if (typeof window.gtag === "function") {
           window.gtag("event", "telegram_click", {
-            cta_location: location
-          });
-        }
-
-        if (window.dataLayer && window.dataLayer.push) {
-          window.dataLayer.push({
-            event: "telegram_click",
-            cta_location: location
+            cta_location: location,
+            cta_text: buttonText,
+            destination: "telegram"
           });
         }
       });
